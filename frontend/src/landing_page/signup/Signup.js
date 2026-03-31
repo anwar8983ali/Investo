@@ -35,7 +35,7 @@ const handleSubmit = async (e) => {
     console.log("Response:", res.data);
 
     if (res.data.success) {
-      window.location.href = "http://localhost:3000";
+      window.location.href="https://your-dashboard.vercel.app";
     } else {
       // 🔥 THIS WAS MISSING
       alert(res.data.message);
