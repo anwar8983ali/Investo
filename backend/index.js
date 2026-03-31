@@ -29,7 +29,10 @@ const app = express();
 app.use(cookieParser());
 
 app.use(cors({
-  origin: ["http://localhost:3000","http://localhost:3001"],
+  origin: [
+    "https://your-frontend.vercel.app",
+    "https://your-dashboard.vercel.app"
+  ],
   credentials: true
 }));
 
