@@ -6,7 +6,9 @@ function Hero() {
 
       <div className="d-flex justify-content-between p-4">
         <h5>Support Portal</h5>
-        <a href="#" className="text-white">Track Tickets</a>
+        <button className="text-white bg-transparent border-0">
+          Track Tickets
+        </button>
       </div>
 
       <div className="row p-5">
@@ -22,10 +24,18 @@ function Hero() {
           />
 
           <div>
-            <a href="#" className="text-white me-3">Track account opening</a>
-            <a href="#" className="text-white me-3">Track segment activation</a>
-            <a href="#" className="text-white me-3">Intraday margins</a>
-            <a href="#" className="text-white">Kite user manual</a>
+            <button className="text-white bg-transparent border-0 me-3">
+              Track account opening
+            </button>
+            <button className="text-white bg-transparent border-0 me-3">
+              Track segment activation
+            </button>
+            <button className="text-white bg-transparent border-0 me-3">
+              Intraday margins
+            </button>
+            <button className="text-white bg-transparent border-0">
+              Kite user manual
+            </button>
           </div>
         </div>
 
@@ -33,14 +43,14 @@ function Hero() {
           <h4>Featured</h4>
           <ol>
             <li>
-              <a href="#" className="text-white">
+              <button className="text-white bg-transparent border-0">
                 Current Takeovers and Delisting - January 2024
-              </a>
+              </button>
             </li>
             <li>
-              <a href="#" className="text-white">
+              <button className="text-white bg-transparent border-0">
                 Latest Intraday leverages - MIS & CO
-              </a>
+              </button>
             </li>
           </ol>
         </div>
