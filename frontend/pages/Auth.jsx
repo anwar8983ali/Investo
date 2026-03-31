@@ -23,8 +23,8 @@ e.preventDefault();
 
 try{
 const url=isSignup
-?"http://localhost:3002/signup"
-:"http://localhost:3002/login";
+?"http://https://investo-hdsy.onrender.com/signup"
+:"http://https://investo-hdsy.onrender.com/login";
 
 const res=await axios.post(url,data,{
 withCredentials:true
