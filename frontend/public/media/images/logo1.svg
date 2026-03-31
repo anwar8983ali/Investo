@@ -1,0 +1,6 @@
+<svg width="320" height="80" viewBox="0 0 320 80" xmlns="http://www.w3.org/2000/svg">
+  <path d="M10 60 L10 20 Q40 20 60 60 Z" fill="#387ed1"/>
+  <text x="80" y="55" font-family="Arial, Helvetica, sans-serif" font-size="36" fill="#387ed1" font-weight="600">
+    INVESTO
+  </text>
+</svg>
