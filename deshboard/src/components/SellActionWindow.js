@@ -12,7 +12,7 @@ const{closeBuyWindow}=useContext(GeneralContext);
 
 const handleSellClick=async()=>{
 try{
-await axios.post("http://localhost:3002/newOrder",{
+await axios.post("http://https://investo-hdsy.onrender.com/newOrder",{
 name:uid,
 qty:stockQuantity,
 price:stockPrice,
