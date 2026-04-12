@@ -162,7 +162,7 @@ app.post("/login", async (req, res) => {
 });
 
 // ✅ fixed typo verifyUse → verifyUser
-app.get("/allHoldings", verifyUser, async (req, res) => {
+app.get("/allHoldings",  async (req, res) => {
   const data = await HoldingModel.find();
   res.json(data);
 });
