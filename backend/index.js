@@ -143,7 +143,7 @@ app.post("/login", async (req, res) => {
   }
 });
 
-app.get("/allHoldings", async (req, res) => {
+app.get("/allHoldings",verifyUse, async (req, res) => {
   const data = await HoldingModel.find();
   res.json(data);
 });
