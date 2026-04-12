@@ -50,8 +50,6 @@ mongoose
     console.log(err);
   });
 
-const bcrypt = require("bcryptjs");
-
 app.post("/signup", async (req, res) => {
   try {
     const email = req.body.email.trim().toLowerCase();
