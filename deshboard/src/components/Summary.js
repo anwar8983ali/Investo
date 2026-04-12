@@ -11,7 +11,7 @@ fetchHoldings();
 
 const fetchHoldings=async()=>{
 try{
-const res=await axios.get("http://localhost:3002/allHoldings");
+const res=await axios.get("https://investo-hdsy.onrender.com/allHoldings");
 setHoldings(res.data);
 }catch(err){
 console.error(err);
