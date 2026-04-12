@@ -50,6 +50,8 @@ mongoose
     console.log(err);
   });
 
+const bcrypt = require("bcryptjs");
+
 app.post("/signup", async (req, res) => {
   try {
     const email = req.body.email.trim().toLowerCase();
@@ -65,24 +67,36 @@ app.post("/signup", async (req, res) => {
       });
     }
 
-    const user = await User.create({ email, password, username });
+    // 🔥 HASH PASSWORD (VERY IMPORTANT)
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-    const token = createToken(user._id);
-
-    res.cookie("token", token, {
-      httpOnly: true,
+    const user = await User.create({
+      email,
+      password: hashedPassword,
+      username
     });
 
-    res.json({ success: true });
+    // 🔥 CREATE TOKEN
+    const token = createToken(user._id);
+
+    // 🔥 SECURE COOKIE
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "None"
+    });
+
+    res.json({
+      success: true,
+      message: "Signup successful"
+    });
 
   } catch (err) {
-    if (err.code === 11000) {
-      return res.json({
-        success: false,
-        message: "Email already exists"
-      });
-    }
     console.log(err);
+    res.status(500).json({
+      success: false,
+      message: "Server error"
+    });
   }
 });
 
@@ -223,6 +237,25 @@ app.get("/allOrders", async (req, res) => {
     res.status(500).send("Error fetching orders");
   }
 });
+
+const verifyUser = (req, res, next) => {
+  const token = req.cookies.token;
+
+  if (!token) {
+    return res.status(401).json({ message: "Not logged in" });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.TOKEN_KEY);
+
+    req.user = decoded; // 🔥 attach user info
+
+    next(); // continue to route
+
+  } catch {
+    return res.status(403).json({ message: "Invalid token" });
+  }
+};
 
 app.listen(PORT, () => {
   console.log("server running at port", 3002);
