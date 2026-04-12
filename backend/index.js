@@ -29,6 +29,28 @@ const app = express();
 
 app.use(cookieParser());
 
+
+// ✅ kept only ONE verifyUser (no conflict now)
+const verifyUser = (req, res, next) => {
+  const token = req.cookies.token;
+
+  if (!token) {
+    return res.status(401).json({ message: "Not logged in" });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.TOKEN_KEY);
+
+    req.user = decoded;
+
+    next();
+
+  } catch {
+    return res.status(403).json({ message: "Invalid token" });
+  }
+};
+
+
 app.use(cors({
   origin: function(origin, callback) {
     if (!origin || origin.includes("vercel.app")) {
@@ -230,26 +252,6 @@ app.get("/allOrders", async (req, res) => {
     res.status(500).send("Error fetching orders");
   }
 });
-
-// ✅ kept only ONE verifyUser (no conflict now)
-const verifyUser = (req, res, next) => {
-  const token = req.cookies.token;
-
-  if (!token) {
-    return res.status(401).json({ message: "Not logged in" });
-  }
-
-  try {
-    const decoded = jwt.verify(token, process.env.TOKEN_KEY);
-
-    req.user = decoded;
-
-    next();
-
-  } catch {
-    return res.status(403).json({ message: "Invalid token" });
-  }
-};
 
 app.listen(PORT, () => {
   console.log("server running at port", PORT);
