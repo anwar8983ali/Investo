@@ -15,7 +15,8 @@ const createToken = (id) => {
 const { HoldingModel } = require("./model/HoldingModel");
 const { PositionModel } = require("./model/PositionModel");
 const { OrderModel } = require("./model/OrderModel");
-const verifyUser=require("./middleware/auth");
+// ❌ removed duplicate verifyUser import (conflict)
+// const verifyUser=require("./middleware/auth");
 
 const mongoose = require("mongoose");
 const PORT = process.env.PORT || 3002;
@@ -65,7 +66,6 @@ app.post("/signup", async (req, res) => {
       });
     }
 
-    // 馃敟 HASH PASSWORD (VERY IMPORTANT)
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = await User.create({
@@ -74,10 +74,8 @@ app.post("/signup", async (req, res) => {
       username
     });
 
-    // 馃敟 CREATE TOKEN
     const token = createToken(user._id);
 
-    // 馃敟 SECURE COOKIE
     res.cookie("token", token, {
       httpOnly: true,
       secure: true,
@@ -100,7 +98,7 @@ app.post("/signup", async (req, res) => {
 
 app.post("/login", async (req, res) => {
   try {
-    const email = req.body.email.trim().toLowerCase(); // 馃敟 FIX
+    const email = req.body.email.trim().toLowerCase();
     const password = req.body.password;
 
     const user = await User.findOne({ email });
@@ -141,7 +139,8 @@ app.post("/login", async (req, res) => {
   }
 });
 
-app.get("/allHoldings",verifyUse, async (req, res) => {
+// ✅ fixed typo verifyUse → verifyUser
+app.get("/allHoldings", verifyUser, async (req, res) => {
   const data = await HoldingModel.find();
   res.json(data);
 });
@@ -163,7 +162,6 @@ app.post("/newOrder", async (req, res) => {
     const normalizedName = name.trim().toUpperCase();
     const normalizedMode = mode.toUpperCase();
 
-    // 1锔忊儯 Save Order
     await OrderModel.create({
       name: normalizedName,
       qty: buyQty,
@@ -171,12 +169,10 @@ app.post("/newOrder", async (req, res) => {
       mode: normalizedMode,
     });
 
-    // 2锔忊儯 Find existing holding
     let existing = await HoldingModel.findOne({ name: normalizedName });
 
     console.log("Existing:", existing);
 
-    // 3锔忊儯 BUY
     if (normalizedMode === "BUY") {
       if (existing) {
         const newQty = existing.qty + buyQty;
@@ -205,7 +201,6 @@ app.post("/newOrder", async (req, res) => {
       }
     }
 
-    // 4锔忊儯 SELL
     else if (normalizedMode === "SELL") {
       if (!existing || existing.qty < buyQty) {
         return res.status(400).send("Not enough stock");
@@ -236,6 +231,7 @@ app.get("/allOrders", async (req, res) => {
   }
 });
 
+// ✅ kept only ONE verifyUser (no conflict now)
 const verifyUser = (req, res, next) => {
   const token = req.cookies.token;
 
@@ -246,9 +242,9 @@ const verifyUser = (req, res, next) => {
   try {
     const decoded = jwt.verify(token, process.env.TOKEN_KEY);
 
-    req.user = decoded; // 馃敟 attach user info
+    req.user = decoded;
 
-    next(); // continue to route
+    next();
 
   } catch {
     return res.status(403).json({ message: "Invalid token" });
@@ -256,5 +252,5 @@ const verifyUser = (req, res, next) => {
 };
 
 app.listen(PORT, () => {
-  console.log("server running at port", 3002);
+  console.log("server running at port", PORT);
 });
