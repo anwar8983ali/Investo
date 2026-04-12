@@ -20,8 +20,14 @@ app.use(cookieParser());
 app.use(express.json());
 
 app.use(cors({
- origin:["https://your-app.vercel.app"],
- credentials:true
+  origin: function(origin, callback) {
+    if (!origin || origin.includes("vercel.app")) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true
 }));
 
 // DB connect
