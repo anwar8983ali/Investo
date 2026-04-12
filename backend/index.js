@@ -18,14 +18,9 @@ const PORT = process.env.PORT || 3002;
 app.use(express.json());
 app.use(cookieParser());
 
-const allowedOrigins = [
-  "https://investo-ecr9-msn01s50j-anwars-projects-4519a4f8.vercel.app/", // auth frontend
-  "https://investo-jqpp-c2jbtia00-anwars-projects-4519a4f8.vercel.app/" // dashboard frontend
-];
-
 app.use(cors({
   origin: function(origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
+    if (!origin || origin.includes("vercel.app")) {
       callback(null, true);
     } else {
       callback(new Error("Not allowed by CORS"));
