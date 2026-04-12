@@ -35,7 +35,7 @@ const handleSubmit = async (e) => {
     console.log("Response:", res.data);
 
     if (res.data.success) {
-      window.location.href="https://your-dashboard.vercel.app";
+      window.location.href="https://investo-bon1.vercel.app/";
     } else {
       // 🔥 THIS WAS MISSING
       alert(res.data.message);
