@@ -15,7 +15,6 @@ const createToken = (id) => {
 const { HoldingModel } = require("./model/HoldingModel");
 const { PositionModel } = require("./model/PositionModel");
 const { OrderModel } = require("./model/OrderModel");
-const verifyUser=require("./middleware/auth");
 
 const mongoose = require("mongoose");
 const PORT = process.env.PORT || 3002;
